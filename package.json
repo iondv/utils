@@ -1,0 +1,47 @@
+{
+  "name": "@iondv/utils",
+  "license": "Apache License 2.0",
+  "engines": {
+    "node": ">=13"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "bin": {
+    "acl": "bin/acl.js",
+    "acl-add-user": "bin/adduser.js",
+    "export": "bin/export.js",
+    "import": "bin/import.js",
+    "import-data": "bin/import-data.js",
+    "setup": "bin/setup.js"
+  },  
+  "bugs": {
+    "url": "https://github.com/iondv/framework/issues"
+  },
+  "private": true,
+  "repository": {
+    "url": "https://github.com/iondv/utils.git",
+    "type": "git"
+  },
+  "homepage": "https://iondv.com",
+  "version": "2.0.0",
+  "dependencies": {
+    "@iondv/acl": "iondv/acl#semver:^2.0.0",
+    "@iondv/acl-contracts": "iondv/acl-contracts#semver:^2.0.0",
+    "@iondv/commons": "iondv/commons#semver:^2.0.1",
+    "@iondv/commons-contracts": "iondv/commons-contracts#semver:^2.0.1",
+    "@iondv/core": "iondv/core#semver:^2.0.0",
+    "@iondv/db": "iondv/db#semver:^2.0.1",
+    "@iondv/i18n": "iondv/i18n#semver:^0.0.1",
+    "@iondv/meta-model": "iondv/meta-model#semver:^2.0.0",
+    "@iondv/meta-model-contracts": "iondv/meta-model-contracts#semver:^2.0.5",
+    "base64-stream": "^1.0.0",
+    "base64-js": "^1.5.1",
+    "clone": "^2.1.2",
+    "js-yaml": "^4.0.0",
+    "jszip": "^3.6.0",
+    "merge": "^2.1.0",
+    "mkdirp": "^1.0.4",
+    "extend": "^3.0.2"
+  }
+}
