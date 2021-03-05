@@ -59,17 +59,15 @@ load(path.normalize(path.join(process.cwd(), 'i18n')), null, config.lang)
   .then(scope =>
     di(
       'app',
-      di.extract(
-        ['dbSync', 'metaRepo'],
-        extend(
-          true,
-          default_config.di,
-          config.di,
-          scope.settings.get('plugins') || {}
-        )
+      extend(
+        true,
+        default_config.di,
+        config.di,
+        scope.settings.get('plugins') || {}
       ),
       {},
-      'boot'
+      'boot',
+      ['dbSync', 'metaRepo']
     )
   )
   .then(scope => alias(scope, scope.settings.get('di-alias')))
