@@ -3,20 +3,29 @@
 /**
  * Created by kras on 10.07.16.
  */
-const metaImporter = require('../lib/import-meta');
-const config = require('../config'); // TODO
-
-const { di, utils: { errorSetup } } = require('@iondv/core');
-const { log: { IonLogger } } = require('@iondv/commons');
-const { t, lang, load } = require('@iondv/i18n');
-
 const path = require('path');
 const extend = require('extend');
+const fs = require('fs');
+
+const metaImporter = require('../lib/import-meta');
+
+let config_file = process.argv[2] || process.env.ION_CONFIG_PATH || 'config';
+
+config_file = path.isAbsolute(config_file)
+  ? config_file
+  : path.normalize(path.join(process.cwd(), config_file));
+
+const config = fs.existsSync(config_file) ? require(config_file) : {};
+
+const default_config = require('../config');
+
+const { di } = require('@iondv/core');
+const { log: { IonLogger } } = require('@iondv/commons');
+const { t, lang, load } = require('@iondv/i18n');
 
 const alias = di.alias;
 
 lang(config.lang);
-errorSetup();
 
 var sysLog = new IonLogger(config.log || {});
 
@@ -35,18 +44,30 @@ process.argv.forEach(function (val) {
   }
 });
 
-load(path.normalize(path.join(__dirname, '..', 'i18n')), null, config.lang)
-  .then(() => di('boot', config.bootstrap, {sysLog: sysLog}, null, ['rtEvents']))
+load(path.normalize(path.join(process.cwd(), 'i18n')), null, config.lang)
+  .then(() => di(
+    'boot',
+    extend(
+      true,
+      default_config.bootstrap,
+      config.bootstrap
+    ),
+    { sysLog: sysLog },
+  ))
   .then(scope =>
     di(
       'app',
       di.extract(
-        ['dbSync', 'metaRepo', 'dataRepo', 'workflows', 'sequenceProvider'],
-        extend(true, config.di, scope.settings.get('plugins') || {})
+        ['dbSync', 'metaRepo'],
+        extend(
+          true,
+          default_config.di,
+          config.di,
+          scope.settings.get('plugins') || {}
+        )
       ),
       {},
-      'boot',
-      ['auth', 'application']
+      'boot'
     )
   )
   .then(scope => alias(scope, scope.settings.get('di-alias')))

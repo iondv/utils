@@ -3,18 +3,27 @@
 /**
  * Created by krasilneg on 21.03.19.
  */
-const dataImporter = require('../lib/import-data');
-const config = require('../config'); // TODO
+const path = require('path');
+const extend = require('extend');
+const fs = require('fs');
 
-const { di, utils: { errorSetup } } = require('@iondv/core');
+const dataImporter = require('../lib/import-data');
+
+let config_file = process.argv[2] || process.env.ION_CONFIG_PATH || 'config';
+
+config_file = path.isAbsolute(config_file)
+  ? config_file
+  : path.normalize(path.join(process.cwd(), config_file));
+
+const config = fs.existsSync(config_file) ? require(config_file) : {};
+
+const default_config = require('../config');
+
+const { di } = require('@iondv/core');
 const { log: { IonLogger } } = require('@iondv/commons');
 const { t, lang, load } = require('@iondv/i18n');
 
-const path = require('path');
-const extend = require('extend');
-
 lang(config.lang);
-errorSetup();
 
 const alias = di.alias;
 
@@ -39,14 +48,22 @@ process.argv.forEach(function (val) {
   }
 });
 
-load(path.normalize(path.join(__dirname, '..', 'i18n')), null, config.lang)
-  .then(() => di('boot', config.bootstrap, {sysLog: sysLog}, null, ['rtEvents']))
+load(path.normalize(path.join(process.cwd(), 'i18n')), null, config.lang)
+  .then(() => di(
+    'boot',
+    extend(
+      true,
+      default_config.bootstrap,
+      config.bootstrap || {}
+    ),
+    {sysLog: sysLog}
+  ))
   .then(scope =>
     di(
       'app',
       di.extract(
         ['dbSync', 'metaRepo', 'dataRepo', 'workflows', 'sequenceProvider'],
-        extend(true, config.di, scope.settings.get('plugins') || {})
+        extend(true, default_config.di, config.di, scope.settings.get('plugins') || {})
       ),
       {},
       'boot',

@@ -9,11 +9,10 @@
   },
   "bin": {
     "acl": "bin/acl.js",
-    "acl-add-user": "bin/adduser.js",
+    "add-user": "bin/adduser.js",
     "export": "bin/export.js",
     "import": "bin/import.js",
-    "import-data": "bin/import-data.js",
-    "setup": "bin/setup.js"
+    "import-data": "bin/import-data.js"
   },  
   "bugs": {
     "url": "https://github.com/iondv/framework/issues"
@@ -28,7 +27,7 @@
   "dependencies": {
     "@iondv/acl": "iondv/acl#semver:^2.0.0",
     "@iondv/acl-contracts": "iondv/acl-contracts#semver:^2.0.0",
-    "@iondv/commons": "iondv/commons#semver:^2.0.1",
+    "@iondv/commons": "iondv/commons#semver:^2.0.3",
     "@iondv/commons-contracts": "iondv/commons-contracts#semver:^2.0.1",
     "@iondv/core": "iondv/core#semver:^2.0.0",
     "@iondv/db": "iondv/db#semver:^2.0.1",

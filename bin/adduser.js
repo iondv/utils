@@ -3,18 +3,27 @@
 /**
  * Created by kras on 24.08.16.
  */
+const fs = require('fs');
 const path = require('path');
 const extend = require('extend');
 
-const config = require('../config'); // TODO
-const { di, utils: { errorSetup } } = require('@iondv/core');
+let config_file = process.argv[2] || process.env.ION_CONFIG_PATH || 'config';
+
+config_file = path.isAbsolute(config_file)
+  ? config_file
+  : path.normalize(path.join(process.cwd(), config_file));
+
+const config = fs.existsSync(config_file) ? require(config_file) : {};
+
+const default_config = require('../config');
+
+const { di } = require('@iondv/core');
 const { log: { IonLogger } } = require('@iondv/commons');
 const { t, lang, load } = require('@iondv/i18n');
 
 const alias = di.alias;
 
 lang(config.lang);
-errorSetup();
 
 var sysLog = new IonLogger({});
 
@@ -43,16 +52,20 @@ process.argv.forEach(function (val) {
 });
 
 // Application binding
-load(path.normalize(path.join(__dirname, '..', 'i18n')), null, config.lang)
-  .then(() => di('boot', config.bootstrap,
-    {
-      sysLog: sysLog
-    }, null, ['rtEvents'])
-  )
+load(path.normalize(path.join(process.cwd(), 'i18n')), null, config.lang)
+  .then(() => di(
+    'boot',
+    extend(
+      true,
+      default_config.bootstrap,
+      config.bootstrap || {}
+    ),
+    {sysLog: sysLog}
+  ))
   .then(scope =>
     di(
       'app',
-      di.extract(['auth'], extend(true, config.di, scope.settings.get('plugins') || {})),
+      di.extract(['auth'], extend(true, default_config.di, config.di, scope.settings.get('plugins') || {})),
       {},
       'boot',
       ['application']
