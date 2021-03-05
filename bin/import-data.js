@@ -67,7 +67,7 @@ load(path.normalize(path.join(process.cwd(), 'i18n')), null, config.lang)
       {},
       'boot',
       ['dataSources', 'dbSync', 'metaRepo', 'dataRepo', 'workflows', 'sequenceProvider'],
-      ['auth', 'application']
+      ['auth', 'application', 'rtEvents']
     )
   )
   .then(scope => alias(scope, scope.settings.get('di-alias')))

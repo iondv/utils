@@ -22,7 +22,6 @@
       "initLevel": 0,
       "options": {
         "logger": "ion://sysLog",
-        "runtimeEvents": "ion://rtEvents",
         "sources": [
           {
             "name":"Db",
