@@ -5,7 +5,7 @@ const read = require('@iondv/commons/lib/config-reader');
 const { readConfig } = require('@iondv/core/utils/read');
 const config = readConfig(path.join(__dirname, './config.json'));
 
-let ini_dir = process.argv[2] || process.env.ION_CONFIG_PATH || 'config';
+let ini_dir = process.env.ION_CONFIG_PATH || 'config';
 
 ini_dir = path.isAbsolute(ini_dir)
   ? ini_dir
