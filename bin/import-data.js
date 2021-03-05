@@ -1,8 +1,10 @@
-'use strict';
+#!/usr/bin/env node
+
 /* eslint no-process-exit:off, no-sync:off */
 /**
  * Created by krasilneg on 21.03.19.
  */
+'use strict';
 const path = require('path');
 const extend = require('extend');
 const fs = require('fs');
