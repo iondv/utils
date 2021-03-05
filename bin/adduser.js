@@ -70,7 +70,7 @@ load(path.normalize(path.join(process.cwd(), 'i18n')), null, config.lang)
       extend(true, default_config.di, config.di, scope.settings.get('plugins') || {}),
       {},
       'boot',
-      ['auth']
+      ['auth', 'dataSources']
       ['application']
     )
   )
