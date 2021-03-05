@@ -30,7 +30,7 @@ const alias = di.alias;
 var sysLog = new IonLogger(config.log || {});
 
 var params = {
-  src: '../in/data',
+  src: path.join(process.cwd(), 'data'),
   ns: null,
   ignoreIntegrityCheck: true
 };

@@ -30,7 +30,7 @@ lang(config.lang);
 var sysLog = new IonLogger(config.log || {});
 
 var params = {
-  src: '../in',
+  src: path.join(process.cwd(), 'meta'),
   ns: null
 };
 
